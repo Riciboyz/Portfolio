@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, ReactNode } from "react"
+import { useEffect, useRef, useState, ReactNode, useCallback } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion } from "framer-motion"
@@ -81,12 +81,12 @@ export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
   const skillsRef = useRef<HTMLDivElement>(null)
   const techRef = useRef<HTMLDivElement>(null)
-  const progressRefs = useRef<(HTMLDivElement | null)[]>([])
+  const progressRefs = useRef<Array<HTMLDivElement | null>>([])
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     // Inicializējam masīvu ar pareizo izmēru
-    progressRefs.current = new Array(skills.length).fill(null);
+    progressRefs.current = new Array(skills.length).fill(null)
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -184,6 +184,12 @@ export default function Skills() {
     }
   }, [])
 
+  const setProgressRef = useCallback((el: HTMLDivElement | null, index: number) => {
+    if (progressRefs.current) {
+      progressRefs.current[index] = el;
+    }
+  }, []);
+
   return (
     <section ref={sectionRef} id="skills" className="py-24 relative overflow-hidden">
       {/* Background elements */}
@@ -233,7 +239,7 @@ export default function Skills() {
 
                 <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
                   <div
-                    ref={(el) => (progressRefs.current[index] = el)}
+                    ref={(el) => setProgressRef(el, index)}
                     className={`h-full rounded-full bg-gradient-to-r ${skill.color}`}
                     style={{ width: "0%" }}
                   ></div>
