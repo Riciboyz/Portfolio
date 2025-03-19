@@ -23,6 +23,7 @@ const nextConfig = {
     optimizePackageImports: ['gsap', 'framer-motion'],
     optimizeFonts: true,
     http2: true,
+    scrollRestoration: true,
   },
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {

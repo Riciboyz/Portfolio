@@ -59,36 +59,42 @@ export default function Projects() {
     }
 
     // Animate section title
-    gsap.fromTo(
-      sectionRef.current?.querySelector("h2"),
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+    const titleElement = sectionRef.current?.querySelector("h2")
+    if (titleElement) {
+      gsap.fromTo(
+        titleElement,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate project cards
-    gsap.fromTo(
-      projectsRef.current?.querySelectorAll(".project-card"),
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: projectsRef.current,
-          start: "top 80%",
+    const projectCards = Array.from(projectsRef.current?.querySelectorAll(".project-card") || [])
+    if (projectCards.length > 0) {
+      gsap.fromTo(
+        projectCards,
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.2,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: projectsRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Parallax effect on project images
     const projectImages = projectsRef.current?.querySelectorAll(".project-image")

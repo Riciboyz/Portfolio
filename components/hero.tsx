@@ -30,7 +30,7 @@ export default function Hero() {
 
   useEffect(() => {
     // Track mouse position for parallax effect
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent | React.MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth - 0.5) * 2,
         y: (e.clientY / window.innerHeight - 0.5) * 2,
@@ -72,13 +72,7 @@ export default function Hero() {
     // Animate title
     tl.fromTo(titleRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
 
-    // Animate content
-    tl.fromTo(
-      contentRef.current?.querySelectorAll(".animate-item"),
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, stagger: 0.1, duration: 0.8, ease: "power3.out" },
-      "-=0.6",
-    )
+    
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)

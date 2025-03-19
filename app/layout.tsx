@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import CursorEffect from '@/components/cursor-effect'
 import PageTransition from '@/components/page-transition'
+import { Suspense } from 'react'
+import Loading from './loading'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -34,12 +36,14 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-black min-h-screen w-full overflow-x-hidden`}>
         <div className="fixed inset-0 bg-black -z-10" />
-        <CursorEffect />
-        <PageTransition>
-          <div className="min-h-screen bg-black">
-            {children}
-          </div>
-        </PageTransition>
+        <Suspense fallback={<Loading />}>
+          <CursorEffect />
+          <PageTransition>
+            <div className="min-h-screen bg-black">
+              {children}
+            </div>
+          </PageTransition>
+        </Suspense>
       </body>
     </html>
   )

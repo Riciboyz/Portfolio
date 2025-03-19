@@ -33,36 +33,7 @@ export default function Experience() {
     }
 
     // Animate section title
-    gsap.fromTo(
-      sectionRef.current?.querySelector("h2"),
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-      },
-    )
-
-    // Animate timeline items
-    gsap.fromTo(
-      timelineRef.current?.querySelectorAll(".timeline-item"),
-      { x: -50, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        stagger: 0.3,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: timelineRef.current,
-          start: "top 80%",
-        },
-      },
-    )
+   
 
     return () => {
       observer.disconnect()

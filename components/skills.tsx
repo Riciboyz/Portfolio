@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, ReactNode } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion } from "framer-motion"
@@ -12,7 +12,27 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const skills = [
+interface Skill {
+  name: string;
+  value: number;
+  icon: ReactNode;
+  color: string;
+  shadowColor: string;
+}
+
+interface Technology {
+  name: string;
+  icon: ReactNode;
+  color: string;
+}
+
+interface TechnologyUrls {
+  Vue: string;
+  "Node.js": string;
+  React: string;
+}
+
+const skills: Skill[] = [
   {
     name: "PHP",
     value: 80,
@@ -43,11 +63,19 @@ const skills = [
   },
 ]
 
-const technologies = [
+const technologies: Technology[] = [
   { name: "React", icon: <Layers className="h-5 w-5" />, color: "from-[#61dafb] to-[#61dafb]" },
   { name: "Vue", icon: <Layers className="h-5 w-5" />, color: "from-[#42b883] to-[#42b883]" },
   { name: "Node.js", icon: <Globe className="h-5 w-5" />, color: "from-[#ffffff] to-[#ffffff]" },
 ]
+
+const urls = {
+  "Vue": "https://vuejs.org",
+  "Node.js": "https://nodejs.org",
+  "React": "https://react.dev"
+} as const;
+
+type UrlKeys = keyof typeof urls;
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -57,6 +85,9 @@ export default function Skills() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    // Inicializējam masīvu ar pareizo izmēru
+    progressRefs.current = new Array(skills.length).fill(null);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -71,35 +102,41 @@ export default function Skills() {
     }
 
     // Animate section title
-    gsap.fromTo(
-      sectionRef.current?.querySelector("h2"),
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+    const titleElement = sectionRef.current?.querySelector("h2")
+    if (titleElement) {
+      gsap.fromTo(
+        titleElement,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate skill cards
-    gsap.fromTo(
-      skillsRef.current?.querySelectorAll(".skill-card"),
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: skillsRef.current,
-          start: "top 80%",
+    const skillCards = Array.from(skillsRef.current?.querySelectorAll(".skill-card") || [])
+    if (skillCards.length > 0) {
+      gsap.fromTo(
+        skillCards,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          scrollTrigger: {
+            trigger: skillsRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate progress bars
     progressRefs.current.forEach((ref, index) => {
@@ -123,20 +160,23 @@ export default function Skills() {
     })
 
     // Animate tech stack
-    gsap.fromTo(
-      techRef.current?.querySelectorAll(".tech-item"),
-      { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: techRef.current,
-          start: "top 85%",
+    const techItems = Array.from(techRef.current?.querySelectorAll(".tech-item") || [])
+    if (techItems.length > 0) {
+      gsap.fromTo(
+        techItems,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          scrollTrigger: {
+            trigger: techRef.current,
+            start: "top 85%",
+          },
         },
-      },
-    )
+      )
+    }
 
     return () => {
       observer.disconnect()
@@ -214,18 +254,11 @@ export default function Skills() {
                 transition={{ duration: 0.5 }}
                 className={`tech-item px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white font-medium flex items-center gap-2 hover:bg-white/10 transition-all duration-300 shadow-lg cursor-pointer`}
                 onClick={() => {
-                  const urls = {
-                    "Vue": "https://vuejs.org",
-                    "Node.js": "https://nodejs.org",
-                    "React": "https://react.dev"
-                  };
-                  const url = urls[tech.name as keyof typeof urls];
+                  const url = urls[tech.name as UrlKeys];
                   if (url) window.open(url, "_blank");
                 }}
               >
-                <div
-                  className={`h-8 w-8 rounded-full bg-gradient-to-r ${tech.color} bg-opacity-20 flex items-center justify-center`}
-                >
+                <div className={`h-8 w-8 rounded-full bg-gradient-to-r ${tech.color} flex items-center justify-center`}>
                   {tech.icon}
                 </div>
                 {tech.name}

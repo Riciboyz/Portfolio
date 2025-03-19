@@ -59,56 +59,65 @@ export default function Contact() {
     }
 
     // Animate section title
-    gsap.fromTo(
-      sectionRef.current?.querySelector("h2"),
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+    const titleElement = sectionRef.current?.querySelector("h2")
+    if (titleElement) {
+      gsap.fromTo(
+        titleElement,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate form
-    gsap.fromTo(
-      formRef.current,
-      { x: -50, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: formRef.current,
-          start: "top 80%",
+    if (formRef.current) {
+      gsap.fromTo(
+        formRef.current,
+        { x: -50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: formRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate contact info
-    gsap.fromTo(
-      infoRef.current?.querySelectorAll(".info-item"),
-      { x: 50, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: infoRef.current,
-          start: "top 80%",
+    const infoItems = Array.from(infoRef.current?.querySelectorAll(".info-item") || [])
+    if (infoItems.length > 0) {
+      gsap.fromTo(
+        infoItems,
+        { x: 50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          stagger: 0.2,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: infoRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
+    // Cleanup function
     return () => {
       observer.disconnect()
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
   }, [])
 

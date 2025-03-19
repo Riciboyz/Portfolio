@@ -17,24 +17,26 @@ export default function About() {
   const imageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Animate text elements
-    const textElements = textRef.current?.querySelectorAll(".animate-item")
-
-    gsap.fromTo(
-      textElements,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+    // Atlasām visus teksta elementus
+    const textElements = Array.from(sectionRef.current?.querySelectorAll('p, h2, h3') || [])
+    
+    if (textElements.length > 0) {
+      gsap.fromTo(
+        textElements,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
         },
-      },
-    )
+      )
+    }
 
     // Animate image
     gsap.fromTo(
@@ -53,7 +55,7 @@ export default function About() {
     )
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
   }, [])
 

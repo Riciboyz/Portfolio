@@ -273,3 +273,21 @@ a, button {
   transition: background-color 0.3s ease-in-out;
 }
 
+/* Smooth page transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Optimize performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent content shift */
+html {
+  scrollbar-gutter: stable;
+}
+

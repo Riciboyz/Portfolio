@@ -16,21 +16,7 @@ export default function Footer() {
 
   useEffect(() => {
     // Animate footer elements
-    gsap.fromTo(
-      footerRef.current?.querySelectorAll(".animate-item"),
-      { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-        },
-      },
-    )
+   
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
